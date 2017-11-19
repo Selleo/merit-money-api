@@ -1,6 +1,8 @@
 import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+
 import Organization from './mongoose/organization';
 
 var app = express();
@@ -15,6 +17,9 @@ db.once('open', () => {
   console.log( '+++Connected to mongoose');
 });
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.listen(3000,()=> {
   console.log('+++Express Server is Running!!!');
 });
@@ -22,16 +27,18 @@ app.get('/',(req,res)=>{
   res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/oranizations',(req,res)=>{
+app.post('/oranizations', (req,res)=>{
+  console.log(req.body);
   var organization = new Organization({
     organizationId: 1,
     name: req.body.name,
   });
-  organization.save((err)=> {
+  organization.save((err, result)=> {
     if (err) {
       console.log('---TodoItem save failed ' + err);
     }
-    console.log('+++TodoItem saved successfully ' + organization.name);
+    console.log(result);
+    console.log('+++TodoItem saved successfully ' + result.name);
     res.redirect('/');
   });
 });
