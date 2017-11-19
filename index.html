@@ -1,0 +1,12 @@
+<h2>This is just a normal POST</h2>
+<div>Create new organization</div>
+<form action="/oranizations" method="POST">
+ <input type="text" placeholder="name" name="name">
+ <button type="submit">Submit</button>
+</form>
+<hr>
+<h2>GraphQL Test</h2>
+<hr>
+<div>
+ <a href="/graphql?query={organization(organizationId:1){organizationId,name}}">GraphQL Test</a>
+</div>
