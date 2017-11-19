@@ -3,7 +3,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 
+import graphqlHTTP from 'express-graphql';
+
 import Organization from './mongoose/organization';
+
+import schema from './graphql/schema';
 
 var app = express();
 var __dirname = path.resolve();
@@ -42,3 +46,8 @@ app.post('/oranizations', (req,res)=>{
     res.redirect('/');
   });
 });
+
+app.use('/graphql', graphqlHTTP (req => ({
+  schema
+  //,graphiql:true
+ })));
