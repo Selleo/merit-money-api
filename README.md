@@ -19,3 +19,9 @@ https://robomongo.org/download
 npm i
 npm i babel-cli -g
 ```
+
+# Start all the things
+
+```
+npm run dev3
+```
