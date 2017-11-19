@@ -11,6 +11,7 @@ import schema from './graphql/schema';
 
 import jwt from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
+import auth0Client from './auth0Client';
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -69,3 +70,23 @@ app.use('/graphql', checkJwt, graphqlHTTP(req => ({
   schema
   //,graphiql:true
 })));
+
+app.get('/users', checkJwt, (req, res)=>{
+  auth0Client.management.getUsers(function (err, users) {
+    if (err) {
+      console.log(err);
+    }
+    console.log('tonie');
+    res.send(users);
+  });
+});
+
+app.get('/user/:uuid', checkJwt, (req, res)=>{
+  //example userId: 'google-oauth2|117019441260906219968'
+  auth0Client.management.getUser({id: req.params.uuid}, (err, user) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send(user);
+  });
+});
