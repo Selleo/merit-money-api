@@ -9,6 +9,24 @@ import Organization from './mongoose/organization';
 
 import schema from './graphql/schema';
 
+import jwt from 'express-jwt';
+import jwksRsa from 'jwks-rsa';
+
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: 'https://dsznajder.auth0.com/.well-known/jwks.json'
+  }),
+
+  // Validate the audience and the issuer.
+  audience: 'https://dsznajder.auth0.com/api/v2/',
+  issuer: 'https://dsznajder.auth0.com/',
+  algorithms: ['RS256'],
+});
+
+
 var app = express();
 var __dirname = path.resolve();
 
@@ -47,7 +65,7 @@ app.post('/oranizations', (req,res)=>{
   });
 });
 
-app.use('/graphql', graphqlHTTP (req => ({
+app.use('/graphql', checkJwt, graphqlHTTP(req => ({
   schema
   //,graphiql:true
- })));
+})));
