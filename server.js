@@ -18,12 +18,11 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: 'https://dsznajder.auth0.com/.well-known/jwks.json'
+    jwksUri: 'https://merit-money.auth0.com/.well-known/jwks.json'
   }),
 
-  // Validate the audience and the issuer.
-  audience: 'https://dsznajder.auth0.com/api/v2/',
-  issuer: 'https://dsznajder.auth0.com/',
+  aud: 'https://merit-money.auth0.com/api/v2/',
+  issuer: 'https://merit-money.auth0.com/',
   algorithms: ['RS256'],
 });
 
@@ -81,9 +80,16 @@ app.get('/users', checkJwt, (req, res)=>{
   });
 });
 
-app.get('/user/:uuid', checkJwt, (req, res)=>{
-  //example userId: 'google-oauth2|117019441260906219968'
-  auth0Client.management.getUser({id: req.params.uuid}, (err, user) => {
+// const checkIfUserExists = (req, res, next) => {
+//   console.log('mamo');
+//   console.log('Requests', req.user.sub);
+//   console.log('----------------------');
+//   next();
+// };
+
+app.get('/user/me', checkJwt, (req, res)=>{
+  console.log('user', req.user);
+  auth0Client.management.getUser({id: req.user.sub}, (err, user) => {
     if (err) {
       console.log(err);
     }

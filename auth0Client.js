@@ -2,15 +2,15 @@ import { ManagementClient, AuthenticationClient } from 'auth0';
 
 //Test Client - to get more use Auth0 dashboard
 const auth0ManagementClient = new ManagementClient({
-  domain: 'dsznajder.auth0.com',
-  clientId: 'KOhJUjGt23IemZLYAiYuFSGA920UiUo5',
-  clientSecret: 'BxCNscQ6dJrvd1tCqoREKW6pZchlKb-CdLSfkMLsCb5pRfH679cFjWvH01EeXlff',
+  domain: 'merit-money.auth0.com',
+  clientId: '25fGeBbehf4apVZcBn6HwPO6z92Kq79d',
+  clientSecret: '_Ezkl4dRLHbq7UEp5luwa5w1TC2S1KRSgK7nEZXwCxYe1uM1awZC33HpIXVqPOCO',
   scope: 'read:users',
 });
 
 const auth0AuthenticationClient = new AuthenticationClient({
-  domain: 'dsznajder.auth0.com',
-  clientId: 'KOhJUjGt23IemZLYAiYuFSGA920UiUo5',
+  domain: 'merit-money.auth0.com',
+  clientId: '25fGeBbehf4apVZcBn6HwPO6z92Kq79d',
 });
 
 export default { management: auth0ManagementClient, authentication: auth0AuthenticationClient };
