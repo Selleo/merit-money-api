@@ -2,6 +2,7 @@ import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 import graphqlHTTP from 'express-graphql';
 
@@ -29,6 +30,7 @@ const checkJwt = jwt({
 
 
 var app = express();
+app.use(cors());
 var __dirname = path.resolve();
 
 mongoose.connect('mongodb://localhost:27017/local', {useMongoClient: true});
