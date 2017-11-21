@@ -67,8 +67,6 @@ app.post('/oranizations', (req,res)=>{
 });
 
 const checkIfUserExists = (req, res, next) => {
-  console.log('mamo');
-  console.log('Requests', req.user);
   User.findOne({ 'user_id': req.user.sub }, (err, user) => {
     if(err) {
       console.log(err);
@@ -82,7 +80,6 @@ const checkIfUserExists = (req, res, next) => {
       });
     }
   });
-  console.log('----------------------');
 
   next();
 };
@@ -97,13 +94,11 @@ app.get('/users', checkJwt, checkIfUserExists, (req, res)=>{
     if (err) {
       console.log(err);
     }
-    console.log('tonie');
     res.send(users);
   });
 });
 
 app.get('/user/me', checkJwt, checkIfUserExists, (req, res)=>{
-  console.log('user', req.user);
   auth0Client.management.getUser({id: req.user.sub}, (err, user) => {
     if (err) {
       console.log(err);
