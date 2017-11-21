@@ -1,66 +1,36 @@
-import {
-  GraphQLObjectType,
-  GraphQLNonNull,
-  GraphQLSchema,
-  GraphQLString,
-  GraphQLList,
-  GraphQLInt,
-} from 'graphql/type';
+import composeWithMongoose from 'graphql-compose-mongoose';
+import { GQC } from 'graphql-compose';
 
-import OrganizationMongoose from '../mongoose/organization';
+import OrganizationModel from '../mongoose/organization';
+import UserModel from '../mongoose/user';
 
-/**
- * generate projection object for mongoose
- * @param  {Object} fieldASTs
- * @return {Project}
- */
-export function getProjection (fieldASTs) {
-  return fieldASTs.fieldNodes[0].selectionSet.selections.reduce((projections, selection) => {
-    projections[selection.name.value] = true;
-    return projections;
-  }, {});
-}
+const customizationOptions = {}; // left it empty for simplicity, described below
+const UserTC = composeWithMongoose(UserModel, customizationOptions);
+const OrganizationTC = composeWithMongoose(OrganizationModel, customizationOptions);
 
-var organizationType = new GraphQLObjectType({
-  name: 'organization',
-  description: 'organization',
-  fields: () => ({
-    organizationId: {
-      type: (GraphQLInt),
-      description: 'Id of organization.',
-    },
-    name: {
-      type: GraphQLString,
-      description: 'The name of the organization.',
-    },
-  })
+// STEP 3: CREATE CRAZY GraphQL SCHEMA WITH ALL CRUD USER OPERATIONS
+// via graphql-compose it will be much much easier, with less typing
+GQC.rootQuery().addFields({
+  organizationById: OrganizationTC.getResolver('findById'),
+  userById: UserTC.getResolver('findById'),
+  userByIds: UserTC.getResolver('findByIds'),
+  userOne: UserTC.getResolver('findOne'),
+  userMany: UserTC.getResolver('findMany'),
+  userCount: UserTC.getResolver('count'),
+  userConnection: UserTC.getResolver('connection'),
+  userPagination: UserTC.getResolver('pagination'),
 });
 
-var schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'RootQueryType',
-    fields: {
-      organization: {
-        type: new GraphQLList(organizationType),
-        args: {
-          organizationId: {
-            name: 'organizationId',
-            type: new GraphQLNonNull(GraphQLInt)
-          }
-        },
-        resolve: (root, {organizationId}, source, fieldASTs) => {
-          var projections = getProjection(fieldASTs);
-          var foundItems = new Promise((resolve, reject) => {
-            OrganizationMongoose.find({ organizationId }, projections,(err, todos) => {
-              err ? reject(err) : resolve(todos);
-            });
-          });
-
-          return foundItems;
-        }
-      }
-    }
-  })
+GQC.rootMutation().addFields({
+  userCreate: UserTC.getResolver('createOne'),
+  userUpdateById: UserTC.getResolver('updateById'),
+  userUpdateOne: UserTC.getResolver('updateOne'),
+  userUpdateMany: UserTC.getResolver('updateMany'),
+  userRemoveById: UserTC.getResolver('removeById'),
+  userRemoveOne: UserTC.getResolver('removeOne'),
+  userRemoveMany: UserTC.getResolver('removeMany'),
+  organizationCreate: OrganizationTC.getResolver('createOne'),
 });
 
-export default schema;
+const graphqlSchema = GQC.buildSchema();
+export default graphqlSchema;

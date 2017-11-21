@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import graphqlHTTP from 'express-graphql';
 
 import Organization from './mongoose/organization';
+import User from './mongoose/user';
 
 import schema from './graphql/schema';
 
@@ -65,12 +66,33 @@ app.post('/oranizations', (req,res)=>{
   });
 });
 
-app.use('/graphql', checkJwt, graphqlHTTP(req => ({
+const checkIfUserExists = (req, res, next) => {
+  console.log('mamo');
+  console.log('Requests', req.user);
+  User.findOne({ 'user_id': req.user.sub }, (err, user) => {
+    if(err) {
+      console.log(err);
+    }
+    if(!user) {
+      User.create({ ...req.user, user_id: req.user.sub }, (err, user) => {
+        if(err) {
+          console.log(err);
+        }
+        console.log('new', user);
+      });
+    }
+  });
+  console.log('----------------------');
+
+  next();
+};
+
+app.use('/graphql', checkJwt, checkIfUserExists, graphqlHTTP(req => ({
   schema
   //,graphiql:true
 })));
 
-app.get('/users', checkJwt, (req, res)=>{
+app.get('/users', checkJwt, checkIfUserExists, (req, res)=>{
   auth0Client.management.getUsers(function (err, users) {
     if (err) {
       console.log(err);
@@ -80,14 +102,7 @@ app.get('/users', checkJwt, (req, res)=>{
   });
 });
 
-// const checkIfUserExists = (req, res, next) => {
-//   console.log('mamo');
-//   console.log('Requests', req.user.sub);
-//   console.log('----------------------');
-//   next();
-// };
-
-app.get('/user/me', checkJwt, (req, res)=>{
+app.get('/user/me', checkJwt, checkIfUserExists, (req, res)=>{
   console.log('user', req.user);
   auth0Client.management.getUser({id: req.user.sub}, (err, user) => {
     if (err) {
