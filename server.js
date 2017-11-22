@@ -1,3 +1,6 @@
+require('dotenv').config();
+
+console.log(process.env.AUTH0_DOMAIN);
 import path from 'path';
 import express from 'express';
 import mongoose from 'mongoose';
@@ -20,21 +23,21 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: 'https://merit-money.auth0.com/.well-known/jwks.json'
+    jwksUri: `https://${process.env.AUTH0_DOMAIN}.auth0.com/.well-known/jwks.json`
   }),
 
-  aud: 'https://merit-money.auth0.com/api/v2/',
-  issuer: 'https://merit-money.auth0.com/',
+  aud: `https://${process.env.AUTH0_DOMAIN}.auth0.com/api/v2/`,
+  issuer: `https://${process.env.AUTH0_DOMAIN}.auth0.com/`,
   algorithms: ['RS256'],
 });
 
 
-var app = express();
+const app = express();
 app.use(cors());
-var __dirname = path.resolve();
+const __dirname = path.resolve();
 
-mongoose.connect('mongodb://localhost:27017/local', {useMongoClient: true});
-var db = mongoose.connection;
+mongoose.connect(process.env.MONGO_URL, {useMongoClient: true});
+const db = mongoose.connection;
 db.on('error', ()=> {
   console.log( '---FAILED to connect to mongoose');
 });
@@ -42,30 +45,17 @@ db.once('open', () => {
   console.log( '+++Connected to mongoose');
 });
 
+app.use(/\/((?!graphql).)*/, bodyParser.urlencoded({ extended: true }));
+app.use(/\/((?!graphql).)*/, bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(bodyParser.text({ type: 'application/graphql' }));
 
 app.listen(3000,()=> {
   console.log('+++Express Server is Running!!!');
 });
 app.get('/',(req,res)=>{
   res.sendFile(__dirname + '/index.html');
-});
-
-app.post('/oranizations', (req,res)=>{
-  console.log(req.body);
-  var organization = new Organization({
-    organizationId: 1,
-    name: req.body.name,
-  });
-  organization.save((err, result)=> {
-    if (err) {
-      console.log('---TodoItem save failed ' + err);
-    }
-    console.log(result);
-    console.log('+++TodoItem saved successfully ' + result.name);
-    res.redirect('/');
-  });
 });
 
 const checkIfUserExists = (req, res, next) => {
@@ -88,23 +78,5 @@ const checkIfUserExists = (req, res, next) => {
 
 app.use('/graphql', checkJwt, checkIfUserExists, graphqlHTTP(req => ({
   schema
-  //,graphiql:true
+  // ,graphiql:true
 })));
-
-app.get('/users', checkJwt, checkIfUserExists, (req, res)=>{
-  auth0Client.management.getUsers(function (err, users) {
-    if (err) {
-      console.log(err);
-    }
-    res.send(users);
-  });
-});
-
-app.get('/user/me', checkJwt, checkIfUserExists, (req, res)=>{
-  auth0Client.management.getUser({id: req.user.sub}, (err, user) => {
-    if (err) {
-      console.log(err);
-    }
-    res.send(user);
-  });
-});
