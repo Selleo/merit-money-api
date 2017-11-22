@@ -6,6 +6,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import basicAuth from 'express-basic-auth';
 
 import graphqlHTTP from 'express-graphql';
 
@@ -79,4 +80,9 @@ const checkIfUserExists = (req, res, next) => {
 app.use('/graphql', checkJwt, checkIfUserExists, graphqlHTTP(req => ({
   schema
   // ,graphiql:true
+})));
+
+app.use('/superql', basicAuth({users: {'admin': process.env.BASIC_AUTH_PASS}, challenge: true, realm: 'Imb4T3st4pp'}), graphqlHTTP(req => ({
+  schema,
+  graphiql:true
 })));
