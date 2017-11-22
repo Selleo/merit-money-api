@@ -51,7 +51,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.text({ type: 'application/graphql' }));
 
-app.listen(3000,()=> {
+app.listen((process.env.PORT || 3000),()=> {
   console.log('+++Express Server is Running!!!');
 });
 app.get('/',(req,res)=>{
