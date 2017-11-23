@@ -18,6 +18,6 @@ var UserSchema = new Schema({
   created_at: Date,
 }, {collection: 'Users'});
 
-const User = mongoose.model('UserModel', UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 export default User;

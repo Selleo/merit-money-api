@@ -1,8 +1,8 @@
 import composeWithMongoose from 'graphql-compose-mongoose';
 import { GQC } from 'graphql-compose';
 
-import OrganizationModel from '../mongoose/organization';
 import UserModel from '../mongoose/user';
+import OrganizationModel from '../mongoose/organization';
 import KudoModel from '../mongoose/kudo';
 
 const customizationOptions = {}; // left it empty for simplicity, described below

@@ -2,8 +2,14 @@ import mongoose from 'mongoose';
 var Schema = mongoose.Schema;
 
 var organizationSchema = new Schema({
-  organizationId: Number,
-  name: String
+  name: String,
+  kudos_per_reset: {
+    type: Number,
+    default: 20,
+    required: true
+  },
+  resets: [Date],
+  last_reset: Date,
 }, {collection: 'Organizations'});
 
 var Organization = mongoose.model('Organization', organizationSchema);

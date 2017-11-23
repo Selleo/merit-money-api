@@ -8,10 +8,6 @@ import cors from 'cors';
 import basicAuth from 'express-basic-auth';
 
 import graphqlHTTP from 'express-graphql';
-
-import Organization from './mongoose/organization';
-import User from './mongoose/user';
-
 import schema from './graphql/schema';
 
 import jwt from 'express-jwt';
@@ -38,6 +34,11 @@ const __dirname = path.resolve();
 
 mongoose.connect(process.env.MONGO_URL, {useMongoClient: true});
 const db = mongoose.connection;
+import User from './mongoose/user';
+import Organization from './mongoose/organization';
+import UserOrganization from './mongoose/userOrganization';
+import Kudo from './mongoose/kudo';
+
 db.on('error', ()=> {
   console.log( '---FAILED to connect to mongoose');
 });

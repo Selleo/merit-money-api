@@ -42,7 +42,8 @@
     "graphql-compose": "^2.9.6",
     "graphql-compose-mongoose": "^1.9.6",
     "jwks-rsa": "^1.2.1",
-    "mongoose": "^4.13.4"
+    "mongoose": "^4.13.4",
+    "mongoose-id-validator": "^0.4.3"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.2",
