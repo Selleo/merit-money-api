@@ -23,5 +23,5 @@ npm i babel-cli -g
 # Start all the things
 
 ```
-npm run dev3
+npm run start
 ```
