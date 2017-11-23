@@ -1,4 +1,3 @@
-import graphql from 'graphql';
 import composeWithMongoose from 'graphql-compose-mongoose';
 import { GQC } from 'graphql-compose';
 
@@ -9,17 +8,20 @@ import UserOrganizationModel from '../mongoose/userOrganization';
 
 const customizationOptions = {}; // left it empty for simplicity, described below
 const UserTC = composeWithMongoose(UserModel, customizationOptions);
+
+UserTC.addResolver({
+  name: 'currentUser',
+  args: {},
+  type: UserTC,
+  resolve: ({context}) => context,
+});
+
 const OrganizationTC = composeWithMongoose(OrganizationModel, customizationOptions);
 const KudoTC = composeWithMongoose(KudoModel, customizationOptions);
 const UserOrganizationTC = composeWithMongoose(UserOrganizationModel, customizationOptions);
 
 GQC.rootQuery().addFields({
-  currentUser: {
-    type: 'JSON',
-    resolve(root, args, context) {
-      return context;
-    }
-  },
+  currentUser: UserTC.getResolver('currentUser'),
   organizationById: OrganizationTC.getResolver('findById'),
   organizationMany: OrganizationTC.getResolver('findMany'),
   userByIds: UserTC.getResolver('findByIds'),
