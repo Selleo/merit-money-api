@@ -71,6 +71,8 @@ const checkIfUserExists = (req, res, next) => {
         }
         console.log('new', user);
       });
+    } else {
+      req.full_user = user;
     }
   });
 
@@ -78,11 +80,13 @@ const checkIfUserExists = (req, res, next) => {
 };
 
 app.use('/graphql', checkJwt, checkIfUserExists, graphqlHTTP(req => ({
-  schema
+  schema,
+  context: req.full_user,
   // ,graphiql:true
 })));
 
 app.use('/superql', basicAuth({users: {'admin': process.env.BASIC_AUTH_PASS}, challenge: true, realm: 'Imb4T3st4pp'}), graphqlHTTP(req => ({
   schema,
-  graphiql:true
+  graphiql:true,
+  context: { name: 'user normal endpoint to get this data' },
 })));
