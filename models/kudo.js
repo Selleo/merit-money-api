@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
-var Schema = mongoose.Schema;
+import idValidator from 'mongoose-id-validator';
 
-import id_validator from 'mongoose-id-validator';
-
-var kudoSchema = new Schema({
+const Schema = mongoose.Schema;
+const kudoSchema = new Schema({
   organization: {
     type: Schema.Types.ObjectId,
     ref: 'Organization',
@@ -29,10 +28,10 @@ var kudoSchema = new Schema({
   },
   comment: String,
   paid: Boolean,
-}, {collection: 'Kudos'});
+}, { collection: 'Kudos' });
 
-kudoSchema.plugin(id_validator);
+kudoSchema.plugin(idValidator);
 
-var Kudo = mongoose.model('Kudo', kudoSchema);
+const Kudo = mongoose.model('Kudo', kudoSchema);
 
 export default Kudo;

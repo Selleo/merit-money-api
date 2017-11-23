@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
-var Schema = mongoose.Schema;
+import idValidator from 'mongoose-id-validator';
 
-import id_validator from 'mongoose-id-validator';
-
-var userOrganizationSchema = new Schema({
+const Schema = mongoose.Schema;
+const userOrganizationSchema = new Schema({
   pending: {
     type: Boolean,
     default: false,
@@ -32,10 +31,10 @@ var userOrganizationSchema = new Schema({
     total_amount_of_kudos: Number,
     is_hamster: Boolean,
   },
-}, {collection: 'UserOrganizations'});
+}, { collection: 'UserOrganizations' });
 
-userOrganizationSchema.plugin(id_validator);
+userOrganizationSchema.plugin(idValidator);
 
-var UserOrganization = mongoose.model('UserOrganization', userOrganizationSchema);
+const UserOrganization = mongoose.model('UserOrganization', userOrganizationSchema);
 
 export default UserOrganization;

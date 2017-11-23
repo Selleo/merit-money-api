@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-var Schema = mongoose.Schema;
 
-var organizationSchema = new Schema({
+const Schema = mongoose.Schema;
+const organizationSchema = new Schema({
   name: String,
   kudos_per_reset: {
     type: Number,
@@ -10,8 +10,8 @@ var organizationSchema = new Schema({
   },
   resets: [Date],
   last_reset: Date,
-}, {collection: 'Organizations'});
+}, { collection: 'Organizations' });
 
-var Organization = mongoose.model('Organization', organizationSchema);
+const Organization = mongoose.model('Organization', organizationSchema);
 
 export default Organization;
