@@ -1,11 +1,10 @@
-import graphql from 'graphql';
 import composeWithMongoose from 'graphql-compose-mongoose';
 import { GQC } from 'graphql-compose';
 
-import UserModel from '../mongoose/user';
-import OrganizationModel from '../mongoose/organization';
-import KudoModel from '../mongoose/kudo';
-import UserOrganizationModel from '../mongoose/userOrganization';
+import UserModel from '../models/user';
+import OrganizationModel from '../models/organization';
+import KudoModel from '../models/kudo';
+import UserOrganizationModel from '../models/userOrganization';
 
 const customizationOptions = {}; // left it empty for simplicity, described below
 const UserTC = composeWithMongoose(UserModel, customizationOptions);
@@ -21,25 +20,24 @@ GQC.rootQuery().addFields({
     }
   },
   organizationById: OrganizationTC.getResolver('findById'),
-  organizationMany: OrganizationTC.getResolver('findMany'),
+  allOrganizations: OrganizationTC.getResolver('findMany'),
   userByIds: UserTC.getResolver('findByIds'),
-  userOne: UserTC.getResolver('findOne'),
-  userMany: UserTC.getResolver('findMany'),
-  kudosMany: KudoTC.getResolver('findMany'),
-  usersUnderOrganization: UserOrganizationTC.getResolver('findMany'),
+  user: UserTC.getResolver('findOne'),
+  allUsers: UserTC.getResolver('findMany'),
+  allKudos: KudoTC.getResolver('findMany'),
+  organizationUsers: UserOrganizationTC.getResolver('findMany'),
 });
 
 GQC.rootMutation().addFields({
-  organizationCreate: OrganizationTC.getResolver('createOne'),
-  organizationUpdateById: OrganizationTC.getResolver('updateById'),
-  organizationRemoveById: OrganizationTC.getResolver('removeById'),
-  userCreate: UserTC.getResolver('createOne'),
-  userUpdateById: UserTC.getResolver('updateById'),
-  userRemoveById: UserTC.getResolver('removeById'),
-  kudoCreate: KudoTC.getResolver('createOne'),
+  createOrganization: OrganizationTC.getResolver('createOne'),
+  updateOrganization: OrganizationTC.getResolver('updateById'),
+  removeOrganization: OrganizationTC.getResolver('removeById'),
+  createUser: UserTC.getResolver('createOne'),
+  updateUser: UserTC.getResolver('updateById'),
+  removeUser: UserTC.getResolver('removeById'),
+  createKudo: KudoTC.getResolver('createOne'),
   createOrganizationUser: UserOrganizationTC.getResolver('createOne'),
   removeOrganizationUser: UserOrganizationTC.getResolver('removeById'),
 });
 
-const graphqlSchema = GQC.buildSchema();
-export default graphqlSchema;
+export default GQC.buildSchema();

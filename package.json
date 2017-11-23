@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node  server.js"
+    "start": "babel-node server.js"
   },
   "repository": {
     "type": "git",
@@ -24,11 +24,9 @@
   "homepage": "https://github.com/Selleo/merit-money-api#readme",
   "dependencies": {
     "auth0": "^2.8.0",
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "6.24.1",
     "basic-auth": "^2.0.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
