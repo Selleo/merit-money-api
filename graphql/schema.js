@@ -12,8 +12,6 @@ const OrganizationTC = composeWithMongoose(OrganizationModel, customizationOptio
 const KudoTC = composeWithMongoose(KudoModel, customizationOptions);
 const UserOrganizationTC = composeWithMongoose(UserOrganizationModel, customizationOptions);
 
-// STEP 3: CREATE CRAZY GraphQL SCHEMA WITH ALL CRUD USER OPERATIONS
-// via graphql-compose it will be much much easier, with less typing
 GQC.rootQuery().addFields({
   organizationById: OrganizationTC.getResolver('findById'),
   organizationMany: OrganizationTC.getResolver('findMany'),
@@ -21,7 +19,7 @@ GQC.rootQuery().addFields({
   userOne: UserTC.getResolver('findOne'),
   userMany: UserTC.getResolver('findMany'),
   kudosMany: KudoTC.getResolver('findMany'),
-  usersUnderOrganization: UserOrganizationTC('findMany'),
+  usersUnderOrganization: UserOrganizationTC.getResolver('findMany'),
 });
 
 GQC.rootMutation().addFields({
