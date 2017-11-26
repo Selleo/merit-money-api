@@ -17,7 +17,7 @@ import Organization from './models/organization';
 import UserOrganization from './models/userOrganization';
 import Kudo from './models/kudo';
 
-import { toCamelCase } from '@travelperksl/case-converter'
+import { toCamelCase } from 'case-converter'
 
 const app = express();
 mongoose.connect(process.env.MONGO_URL, { useMongoClient: true });

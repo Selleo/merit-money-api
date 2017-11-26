@@ -11,25 +11,25 @@ const userOrganizationSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  organization: {
+  organizationId: {
     type: Schema.Types.ObjectId,
     ref: 'Organization',
     required: true,
   },
-  user: {
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  created_at: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
-  generated_info: {
-    kudos_left: Number,
-    last_amount_of_kudos: Number, //that's how we will get collectors
-    total_amount_of_kudos: Number,
-    is_hamster: Boolean,
+  generatedInfo: {
+    kudosLeft: Number,
+    lastAmountOfKudos: Number, //that's how we will get collectors
+    totalAmountOfKudos: Number,
+    isHamster: Boolean,
   },
 }, { collection: 'UserOrganizations' });
 
