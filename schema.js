@@ -1,9 +1,11 @@
 import { GQC } from 'graphql-compose';
 
-import UserTC from './user';
-import OrganizationTC from './organization';
-import KudoTC from './kudo';
-import UserOrganizationTC from './userOrganization';
+import {
+  UserTC,
+  OrganizationTC,
+  KudoTC,
+  UserOrganizationTC,
+} from './graphql';
 
 GQC.rootQuery().addFields({
   currentUser: UserTC.getResolver('currentUser'),

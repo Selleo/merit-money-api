@@ -8,7 +8,7 @@ import cors from 'cors';
 import basicAuth from 'express-basic-auth';
 import graphqlHTTP from 'express-graphql';
 
-import schema from './graphql/schema';
+import schema from './schema';
 
 import { checkJwt } from './middlewares/auth';
 import { checkIfUserExists, setupFirstUserAsCurrent } from './middlewares/currentUser';
