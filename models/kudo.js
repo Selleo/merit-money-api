@@ -89,6 +89,4 @@ kudoSchema.post('save', function(doc, next) {
   });
 });
 
-const Kudo = mongoose.model('Kudo', kudoSchema);
-
-export default Kudo;
+export default mongoose.model('Kudo', kudoSchema);

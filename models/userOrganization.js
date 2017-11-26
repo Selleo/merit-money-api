@@ -50,6 +50,4 @@ userOrganizationSchema.pre('save', function(next) {
   });
 });
 
-const UserOrganization = mongoose.model('UserOrganization', userOrganizationSchema);
-
-export default UserOrganization;
+export default mongoose.model('UserOrganization', userOrganizationSchema);
