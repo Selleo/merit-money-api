@@ -1,10 +1,10 @@
-import KudoModel from '../models/kudo';
+import { Kudo } from '../models';
 import composeWithMongoose from 'graphql-compose-mongoose';
 
 import OrganizationTC from './organization';
 import UserTC from './user';
 
-const KudoTC = composeWithMongoose(KudoModel, {});
+const KudoTC = composeWithMongoose(Kudo, {});
 
 export default KudoTC;
 

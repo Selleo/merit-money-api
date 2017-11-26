@@ -1,6 +1,6 @@
 import composeWithMongoose from 'graphql-compose-mongoose';
-import OrganizationModel from '../models/organization';
+import { Organization } from '../models';
 
-const OrganizationTC = composeWithMongoose(OrganizationModel, {});
+const OrganizationTC = composeWithMongoose(Organization, {});
 
 export default OrganizationTC;

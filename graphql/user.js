@@ -1,7 +1,8 @@
-import UserModel from '../models/user';
+import { User } from '../models';
+
 import composeWithMongoose from 'graphql-compose-mongoose';
 
-const UserTC = composeWithMongoose(UserModel, {});
+const UserTC = composeWithMongoose(User, {});
 
 UserTC.addResolver({
   name: 'currentUser',

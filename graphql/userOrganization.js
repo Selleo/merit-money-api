@@ -1,10 +1,10 @@
-import UserOrganizationModel from '../models/userOrganization';
+import { UserOrganization } from '../models';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 import OrganizationTC from './organization';
 import UserTC from './user';
 
-const UserOrganizationTC = composeWithMongoose(UserOrganizationModel, {});
+const UserOrganizationTC = composeWithMongoose(UserOrganization, {});
 
 export default UserOrganizationTC;
 
