@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import idValidator from 'mongoose-id-validator';
+import UserOrganization from './userOrganization';
 
 const Schema = mongoose.Schema;
 const kudoSchema = new Schema({
@@ -31,6 +32,52 @@ const kudoSchema = new Schema({
 }, { collection: 'Kudos' });
 
 kudoSchema.plugin(idValidator);
+
+//URGENT - do not change into arrow functions
+kudoSchema.pre('save', function(next) {
+  if(this.giverId === this.receiverId) {
+    var err = new Error('You can not give kudo to yourself!');
+    next(err);
+  } else {
+    next();
+  }
+});
+
+//URGENT - do not change into arrow functions
+kudoSchema.pre('save', function(next) {
+  const self = this;
+  UserOrganization.findOne({userId: this.giverId, organizationId: this.organizationId}, (err, userOrganization) => {
+    if(err) { next(err); }
+
+    if(userOrganization.generatedInfo.kudosLeft >= self.amount){
+      next();
+    } else {
+      var err_ = new Error('You do not have enought Kudos!');
+      next(err_);
+    }
+  });
+});
+
+//URGENT - do not change into arrow functions
+kudoSchema.post('save', function(doc, next) {
+  const self = this;
+  const filterCriteria = {userId: doc.giverId, organizationId: doc.organizationId};
+
+  UserOrganization.findOne(filterCriteria, (err, userOrganization) => {
+    if(err) { next(err); }
+    const newKudoAmount = userOrganization.generatedInfo.kudosLeft - self.amount;
+    userOrganization.generatedInfo.kudosLeft = newKudoAmount;
+    userOrganization.markModified('generatedInfo');
+
+    UserOrganization.update(filterCriteria, {
+      '$set': {
+        'generatedInfo.kudosLeft': newKudoAmount,
+      }
+    }, (err) =>{
+      err ? next(err) : next();
+    });
+  });
+});
 
 const Kudo = mongoose.model('Kudo', kudoSchema);
 

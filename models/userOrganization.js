@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import idValidator from 'mongoose-id-validator';
 
+import Organization from './organization';
+
 const Schema = mongoose.Schema;
 const userOrganizationSchema = new Schema({
   pending: {
@@ -34,6 +36,19 @@ const userOrganizationSchema = new Schema({
 }, { collection: 'UserOrganizations' });
 
 userOrganizationSchema.plugin(idValidator);
+
+//URGENT - do not change into arrow functions
+userOrganizationSchema.pre('save', function(next) {
+  Organization.findOne({_id: this.organizationId}).then((organization) => {
+    this.generatedInfo = {
+      kudosLeft: organization.kudosPerReset,
+      totalAmountOfKudos: 0,
+      lastAmountOfKudos: 0,
+      isHamster: false,
+    },
+    next();
+  });
+});
 
 const UserOrganization = mongoose.model('UserOrganization', userOrganizationSchema);
 
