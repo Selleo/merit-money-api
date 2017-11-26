@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Selleo/merit-money-api#readme",
   "dependencies": {
+    "@travelperksl/case-converter": "0.0.0-development",
     "auth0": "^2.8.0",
     "babel-cli": "6.26.0",
     "babel-preset-env": "^1.6.1",

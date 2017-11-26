@@ -17,6 +17,8 @@ import Organization from './models/organization';
 import UserOrganization from './models/userOrganization';
 import Kudo from './models/kudo';
 
+import { toCamelCase } from '@travelperksl/case-converter'
+
 const app = express();
 mongoose.connect(process.env.MONGO_URL, { useMongoClient: true });
 
@@ -50,12 +52,13 @@ const checkIfUserExists = (req, res, next) => {
   User.findOne({ user_id : req.user.sub }, (err, user) => {
     if (err) { console.log(err) }
     if (!user) {
-      User.create({ ...req.user, user_id: req.user.sub }, (err, user) => {
+      const userData =  toCamelCase(req.user)
+      User.create({ ...userData, userId: req.user.sub }, (err, user) => {
         if (err) { console.log(err) }
         next();
       });
     } else {
-      req.full_user = user;
+      req.fullUser = user;
       next();
     }
   });
@@ -64,7 +67,7 @@ const checkIfUserExists = (req, res, next) => {
 const setupFirstUserAsCurrent = (req, res, next) => {
   User.findOne({}, (err, user) => {
     if (err) { console.log(err) }
-    req.full_user = user;
+    req.fullUser = user;
     next();
   });
 };
@@ -86,7 +89,7 @@ app.use('/graphql',
   checkIfUserExists,
   graphqlHTTP(req => ({
     schema,
-    context: req.full_user,
+    context: req.fullUser,
   }))
 );
 
@@ -96,6 +99,6 @@ app.use('/graphiql',
   graphqlHTTP(req => ({
     schema,
     graphiql: true,
-    context: req.full_user,
+    context: req.fullUser,
   }))
 )

@@ -3,17 +3,17 @@ import idValidator from 'mongoose-id-validator';
 
 const Schema = mongoose.Schema;
 const kudoSchema = new Schema({
-  organization: {
+  organizationId: {
     type: Schema.Types.ObjectId,
     ref: 'Organization',
     required: true,
   },
-  giver: {
+  giverId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  receiver: {
+  receiverId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
@@ -22,7 +22,7 @@ const kudoSchema = new Schema({
     type: Number,
     required: true,
   },
-  created_at: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },

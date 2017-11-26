@@ -3,19 +3,19 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   email: String,
-  email_verified: Boolean,
+  emailVerified: Boolean,
   name: String,
-  given_name: String,
-  family_name: String,
+  givenName: String,
+  familyName: String,
   picture: String,
   gender: String,
   locale: String,
-  user_id: {
+  userId: {
     type: String,
     index: true,
   },
   nickname: String,
-  created_at: Date,
+  createdAt: Date,
 }, { collection: 'Users' });
 
 const User = mongoose.model('User', UserSchema);
