@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import idValidator from 'mongoose-id-validator';
 
+import Organization from './organization';
+
 const Schema = mongoose.Schema;
 const userOrganizationSchema = new Schema({
   pending: {
@@ -11,30 +13,41 @@ const userOrganizationSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  organization: {
+  organizationId: {
     type: Schema.Types.ObjectId,
     ref: 'Organization',
     required: true,
   },
-  user: {
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  created_at: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
-  generated_info: {
-    kudos_left: Number,
-    last_amount_of_kudos: Number, //that's how we will get collectors
-    total_amount_of_kudos: Number,
-    is_hamster: Boolean,
+  generatedInfo: {
+    kudosLeft: Number,
+    lastAmountOfKudos: Number, //that's how we will get collectors
+    totalAmountOfKudos: Number,
+    isHamster: Boolean,
   },
 }, { collection: 'UserOrganizations' });
 
 userOrganizationSchema.plugin(idValidator);
 
-const UserOrganization = mongoose.model('UserOrganization', userOrganizationSchema);
+//URGENT - do not change into arrow functions
+userOrganizationSchema.pre('save', function(next) {
+  Organization.findOne({_id: this.organizationId}).then((organization) => {
+    this.generatedInfo = {
+      kudosLeft: organization.kudosPerReset,
+      totalAmountOfKudos: 0,
+      lastAmountOfKudos: 0,
+      isHamster: false,
+    },
+    next();
+  });
+});
 
-export default UserOrganization;
+export default mongoose.model('UserOrganization', userOrganizationSchema);

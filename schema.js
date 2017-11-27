@@ -1,24 +1,11 @@
-import composeWithMongoose from 'graphql-compose-mongoose';
 import { GQC } from 'graphql-compose';
 
-import UserModel from '../models/user';
-import OrganizationModel from '../models/organization';
-import KudoModel from '../models/kudo';
-import UserOrganizationModel from '../models/userOrganization';
-
-const customizationOptions = {}; // left it empty for simplicity, described below
-const UserTC = composeWithMongoose(UserModel, customizationOptions);
-
-UserTC.addResolver({
-  name: 'currentUser',
-  args: {},
-  type: UserTC,
-  resolve: ({context}) => context,
-});
-
-const OrganizationTC = composeWithMongoose(OrganizationModel, customizationOptions);
-const KudoTC = composeWithMongoose(KudoModel, customizationOptions);
-const UserOrganizationTC = composeWithMongoose(UserOrganizationModel, customizationOptions);
+import {
+  UserTC,
+  OrganizationTC,
+  KudoTC,
+  UserOrganizationTC,
+} from './graphql';
 
 GQC.rootQuery().addFields({
   currentUser: UserTC.getResolver('currentUser'),
