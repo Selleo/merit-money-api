@@ -7,13 +7,14 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import basicAuth from 'express-basic-auth';
 import graphqlHTTP from 'express-graphql';
+import Agendash from 'agendash';
 
 import schema from './schema';
 
 import { checkJwt } from './middlewares/auth';
 import { checkIfUserExists, setupFirstUserAsCurrent } from './middlewares/currentUser';
 
-import { setupDatabase } from './database';
+import { setupDatabase, agenda } from './database';
 
 setupDatabase();
 
@@ -29,6 +30,10 @@ app.get('/', (req,res) => {
   const __dirname = path.resolve();
   res.sendFile(__dirname + '/index.html');
 });
+app.use('/agenda',
+  basicAuth({users: {'admin': process.env.BASIC_AUTH_PASS}, challenge: true, realm: 'Imb4T3st4pp'}),
+  Agendash(agenda())
+);
 app.use('/graphql',
   checkJwt,
   checkIfUserExists,
@@ -46,6 +51,7 @@ app.use('/graphiql',
     context: req.fullUser,
   }))
 );
+
 app.listen((process.env.PORT || 3000), () => {
   console.log('+++Express Server is Running!!!');
 });

@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/Selleo/merit-money-api#readme",
   "dependencies": {
+    "agenda": "^1.0.3",
+    "agendash": "^0.4.0",
     "auth0": "^2.8.0",
     "babel-cli": "6.26.0",
     "babel-preset-env": "^1.6.1",
