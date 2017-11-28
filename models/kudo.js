@@ -36,7 +36,7 @@ kudoSchema.plugin(idValidator);
 //URGENT - do not change into arrow functions
 kudoSchema.pre('save', function(next) {
   if(this.giverId === this.receiverId) {
-    var err = new Error('You can not give kudo to yourself!');
+    const err = new Error('You can not give kudo to yourself!');
     next(err);
   }
   next();
@@ -45,7 +45,7 @@ kudoSchema.pre('save', function(next) {
 //URGENT - do not change into arrow functions
 kudoSchema.pre('save', function(next) {
   if(this.amount < 1 || this.amount > 5) {
-    var err = new Error('You can give once 1,2,3,4 or 5 kudos. Number of kudos can not be negative or bigger than 5');
+    const err = new Error('You can give once 1,2,3,4 or 5 kudos. Number of kudos can not be negative or bigger than 5');
     next(err);
   }
   next();
@@ -60,7 +60,7 @@ kudoSchema.pre('save', function(next) {
     if(userOrganization.generatedInfo.kudosLeft >= self.amount){
       next();
     } else {
-      var err_ = new Error('You do not have enough Kudos!');
+      const err_ = new Error('You do not have enough Kudos!');
       next(err_);
     }
   });

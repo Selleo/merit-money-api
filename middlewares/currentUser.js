@@ -2,7 +2,7 @@ import { User } from '../models';
 import { toCamelCase } from 'case-converter'
 
 export const checkIfUserExists = (req, res, next) => {
-  User.findOne({ user_id : req.user.sub }, (err, user) => {
+  User.findOne({ userId : req.user.sub }, (err, user) => {
     if (err) { console.log(err) }
     if (!user) {
       const userData =  toCamelCase(req.user)
