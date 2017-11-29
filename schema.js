@@ -4,7 +4,7 @@ import {
   UserTC,
   OrganizationTC,
   KudoTC,
-  UserOrganizationTC,
+  ParticipantTC,
 } from './graphql';
 
 GQC.rootQuery().addFields({
@@ -15,7 +15,7 @@ GQC.rootQuery().addFields({
   user: UserTC.getResolver('findOne'),
   allUsers: UserTC.getResolver('findMany'),
   allKudos: KudoTC.getResolver('findMany'),
-  organizationUsers: UserOrganizationTC.getResolver('findMany'),
+  participants: ParticipantTC.getResolver('findMany'),
 });
 
 GQC.rootMutation().addFields({
@@ -26,8 +26,8 @@ GQC.rootMutation().addFields({
   updateUser: UserTC.getResolver('updateById'),
   removeUser: UserTC.getResolver('removeById'),
   createKudo: KudoTC.getResolver('createOne'),
-  createOrganizationUser: UserOrganizationTC.getResolver('createOne'),
-  removeOrganizationUser: UserOrganizationTC.getResolver('removeById'),
+  createParticipant: ParticipantTC.getResolver('createOne'),
+  removeParticipant: ParticipantTC.getResolver('removeById'),
 });
 
 export default GQC.buildSchema();

@@ -1,6 +1,6 @@
 import UserTC from './user';
 import OrganizationTC from './organization';
 import KudoTC from './kudo';
-import UserOrganizationTC from './userOrganization';
+import ParticipantTC from './participant';
 
-export { UserTC, OrganizationTC, UserOrganizationTC, KudoTC };
+export { UserTC, OrganizationTC, ParticipantTC, KudoTC };

@@ -25,5 +25,8 @@ module.exports = {
             "always"
         ],
         "no-console": "off",
+    },
+    "globals": {
+        "process": true,
     }
 };
