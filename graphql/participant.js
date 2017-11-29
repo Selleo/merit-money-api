@@ -1,14 +1,14 @@
-import { UserOrganization } from '../models';
+import { Participant } from '../models';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 import OrganizationTC from './organization';
 import UserTC from './user';
 
-const UserOrganizationTC = composeWithMongoose(UserOrganization, {});
+const ParticipantTC = composeWithMongoose(Participant, {});
 
-export default UserOrganizationTC;
+export default ParticipantTC;
 
-UserOrganizationTC.addRelation(
+ParticipantTC.addRelation(
   'organization',
   {
     resolver: () => OrganizationTC.getResolver('findById'),
@@ -19,7 +19,7 @@ UserOrganizationTC.addRelation(
   }
 );
 
-UserOrganizationTC.addRelation(
+ParticipantTC.addRelation(
   'user',
   {
     resolver: () => UserTC.getResolver('findById'),

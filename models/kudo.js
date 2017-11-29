@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import idValidator from 'mongoose-id-validator';
-import UserOrganization from './userOrganization';
+import Participant from './participant';
 
 const Schema = mongoose.Schema;
 const kudoSchema = new Schema({
@@ -54,10 +54,10 @@ kudoSchema.pre('save', function(next) {
 //URGENT - do not change into arrow functions
 kudoSchema.pre('save', function(next) {
   const self = this;
-  UserOrganization.findOne({userId: this.giverId, organizationId: this.organizationId}, (err, userOrganization) => {
+  Participant.findOne({userId: this.giverId, organizationId: this.organizationId}, (err, participant) => {
     if(err) { next(err); }
 
-    if(userOrganization.generatedInfo.kudosLeft >= self.amount){
+    if(participant.generatedInfo.kudosLeft >= self.amount){
       next();
     } else {
       const err_ = new Error('You do not have enough Kudos!');
@@ -71,13 +71,13 @@ kudoSchema.post('save', function(doc, next) {
   const self = this;
   const filterCriteria = {userId: doc.giverId, organizationId: doc.organizationId};
 
-  UserOrganization.findOne(filterCriteria, (err, userOrganization) => {
+  Participant.findOne(filterCriteria, (err, participant) => {
     if(err) { next(err); }
-    const newKudoAmount = userOrganization.generatedInfo.kudosLeft - self.amount;
-    userOrganization.generatedInfo.kudosLeft = newKudoAmount;
-    userOrganization.markModified('generatedInfo');
+    const newKudoAmount = participant.generatedInfo.kudosLeft - self.amount;
+    participant.generatedInfo.kudosLeft = newKudoAmount;
+    participant.markModified('generatedInfo');
 
-    UserOrganization.update(filterCriteria, {
+    Participant.update(filterCriteria, {
       '$set': {
         'generatedInfo.kudosLeft': newKudoAmount,
       }

@@ -1,6 +1,6 @@
 import User from './user';
 import Organization from './organization';
-import UserOrganization from './userOrganization';
+import Participant from './participant';
 import Kudo from './kudo';
 
-export { User, Organization, UserOrganization, Kudo };
+export { User, Organization, Participant, Kudo };

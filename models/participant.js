@@ -4,7 +4,7 @@ import idValidator from 'mongoose-id-validator';
 import Organization from './organization';
 
 const Schema = mongoose.Schema;
-const userOrganizationSchema = new Schema({
+const participantSchema = new Schema({
   pending: {
     type: Boolean,
     default: false,
@@ -33,12 +33,12 @@ const userOrganizationSchema = new Schema({
     totalAmountOfKudos: Number,
     isHamster: Boolean,
   },
-}, { collection: 'UserOrganizations' });
+}, { collection: 'Participants' });
 
-userOrganizationSchema.plugin(idValidator);
+participantSchema.plugin(idValidator);
 
 //URGENT - do not change into arrow functions
-userOrganizationSchema.pre('save', function(next) {
+participantSchema.pre('save', function(next) {
   Organization.findOne({_id: this.organizationId}).then((organization) => {
     this.generatedInfo = {
       kudosLeft: organization.kudosPerReset,
@@ -50,4 +50,4 @@ userOrganizationSchema.pre('save', function(next) {
   });
 });
 
-export default mongoose.model('UserOrganization', userOrganizationSchema);
+export default mongoose.model('Participant', participantSchema);
