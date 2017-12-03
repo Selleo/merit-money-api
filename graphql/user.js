@@ -6,7 +6,11 @@ const UserTC = composeWithMongoose(User, {});
 
 UserTC.addResolver({
   name: 'currentUser',
-  args: {},
+  args: {
+    filter: false,
+    limit: false,
+    sort: false,
+  },
   type: UserTC,
   resolve: ({context}) => context,
 });
