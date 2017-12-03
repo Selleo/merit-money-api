@@ -2,7 +2,6 @@ if (process.env.NODE_ENV !== 'production') { require('dotenv').config() }
 
 import './models';
 import path from 'path';
-import crypto from 'crypto';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -18,8 +17,6 @@ import { checkIfUserExists, setupFirstUserAsCurrent } from './middlewares/curren
 import { setupDatabase, agenda } from './database';
 
 setupDatabase();
-
-console.log('testowu', crypto.createHash('sha1'), crypto.createHash('sha1').update(Math.random().toString()).digest('hex'));
 
 const app = express();
 
