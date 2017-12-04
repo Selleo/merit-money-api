@@ -3,6 +3,7 @@ import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 import OrganizationTC from './organization';
 import UserTC from './user';
+import KudoTC from './kudo';
 
 const ParticipantTC = composeWithMongoose(Participant, {});
 
@@ -27,5 +28,17 @@ ParticipantTC.addRelation(
       _id: source => source.userId,
     },
     projection: { userId: true },
+  }
+);
+
+ParticipantTC.addRelation(
+  'kudo',
+  {
+    resolver: KudoTC.getResolver('findMany'),
+    prepareArgs: {
+      giverId: (_, __, { _id }) => _id,
+      organizationId: source => source.organizationId,
+    },
+    projection: { giverId: true, organizationId: true },
   }
 );
