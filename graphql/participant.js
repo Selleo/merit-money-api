@@ -1,4 +1,4 @@
-import { Participant } from '../models';
+import { Participant, Organization } from '../models';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 import OrganizationTC from './organization';
@@ -36,9 +36,17 @@ ParticipantTC.addRelation(
   {
     resolver: KudoTC.getResolver('findMany'),
     prepareArgs: {
-      giverId: (_, __, { _id }) => _id,
-      organizationId: source => source.organizationId,
+      filter: (source, args, { _id }) =>  {
+        // const organization = await Organization.findById(source.organizationId).exec();
+        // console.log(organization.lastReset);
+        return ({
+          organizationId: source.organizationId,
+          receiverId: source.userId,
+          giverId: _id,
+          // createdAt: { '$gt':  organization.lastReset },
+        });
+      }
     },
-    projection: { giverId: true, organizationId: true },
+    projection: { userId: true, organizationId: true, organization: true },
   }
 );
