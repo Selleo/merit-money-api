@@ -1,4 +1,4 @@
-import { Participant, Organization } from '../models';
+import { Participant } from '../models';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 import OrganizationTC from './organization';
@@ -43,6 +43,6 @@ ParticipantTC.addRelation(
         currentPeriod: true,
       }),
     },
-    projection: { userId: true, organizationId: true, organization: true },
+    projection: { userId: true, organizationId: true },
   }
 );
