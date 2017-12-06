@@ -16,6 +16,10 @@ GQC.rootQuery().addFields({
   allUsers: UserTC.getResolver('findMany'),
   allKudos: KudoTC.getResolver('findMany'),
   participants: ParticipantTC.getResolver('findMany'),
+  participantsWithoutCurrentUser: ParticipantTC.getResolver('findMany').wrapResolve(next => (rp) => {
+    rp.args.filter = Object.assign({ userId: {'$nin': rp.context._id} }, rp.args.filter);
+    return next(rp);
+  })
 });
 
 GQC.rootMutation().addFields({

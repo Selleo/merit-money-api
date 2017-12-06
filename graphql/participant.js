@@ -36,16 +36,12 @@ ParticipantTC.addRelation(
   {
     resolver: KudoTC.getResolver('findMany'),
     prepareArgs: {
-      filter: (source, args, { _id }) =>  {
-        // const organization = await Organization.findById(source.organizationId).exec();
-        // console.log(organization.lastReset);
-        return ({
-          organizationId: source.organizationId,
-          receiverId: source.userId,
-          giverId: _id,
-          // createdAt: { '$gt':  organization.lastReset },
-        });
-      }
+      filter: (source, args, { _id }) =>  ({
+        organizationId: source.organizationId,
+        receiverId: source.userId,
+        giverId: _id,
+        isBrandNew: true,
+      }),
     },
     projection: { userId: true, organizationId: true, organization: true },
   }

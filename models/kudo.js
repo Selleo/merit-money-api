@@ -27,6 +27,10 @@ const kudoSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  isBrandNew: {
+    type: Boolean,
+    default: true,
+  },
   comment: String,
   paid: Boolean,
 }, { collection: 'Kudos' });
