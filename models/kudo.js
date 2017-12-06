@@ -8,16 +8,19 @@ const kudoSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Organization',
     required: true,
+    index: true,
   },
   giverId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+    index: true,
   },
   receiverId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+    index: true,
   },
   amount: {
     type: Number,
@@ -27,9 +30,10 @@ const kudoSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  isBrandNew: {
+  currentPeriod: {
     type: Boolean,
     default: true,
+    index: true,
   },
   comment: String,
   paid: Boolean,
