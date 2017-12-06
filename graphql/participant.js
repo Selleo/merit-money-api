@@ -40,7 +40,7 @@ ParticipantTC.addRelation(
         organizationId: source.organizationId,
         receiverId: source.userId,
         giverId: _id,
-        isBrandNew: true,
+        currentPeriod: true,
       }),
     },
     projection: { userId: true, organizationId: true, organization: true },

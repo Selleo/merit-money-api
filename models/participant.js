@@ -17,11 +17,13 @@ const participantSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Organization',
     required: true,
+    index: true,
   },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+    index: true,
   },
   createdAt: {
     type: Date,
