@@ -1,27 +1,24 @@
-# API for Merit-Money
+# README
 
-# Install mongo
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-```
-brew install mongo
-brew services start mongodb
-```
+Things you may want to cover:
 
-# Install Robomongo (Robot 3T)
+* Ruby version
 
-```
-https://robomongo.org/download
-```
+* System dependencies
 
-# Install packages
+* Configuration
 
-```
-npm i
-npm i babel-cli -g
-```
+* Database creation
 
-# Start all the things
+* Database initialization
 
-```
-npm run start
-```
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
