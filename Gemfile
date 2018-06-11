@@ -30,4 +30,5 @@ end
 
 group :test do
   gem 'rspec-rails'
+  gem 'rspec-json_expectations'
 end
