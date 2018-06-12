@@ -12,8 +12,8 @@ describe Api::V1::UsersController do
 
       expect(response.status).to eq(200)
       expect(JSON.parse(response.body).count).to eq 11
-      expect(JSON.parse(response.body).last.name).to eq 'Janusz'
-      expect(JSON.parse(response.body).last.email).to eq 'fake.mail@example.com'
+      expect(JSON.parse(response.body).last['name']).to eq 'Janusz'
+      expect(JSON.parse(response.body).last['email']).to eq 'fake.mail@example.com'
     end
   end
 
@@ -30,8 +30,12 @@ describe Api::V1::UsersController do
   end
 
   describe 'POST /api/users' do
-    it 'creates new user' do
+    it 'creates a new user' do
+      post '/api/v1/users', params: {name: 'Grazyna', email: 'newmail@example.com'}
 
+      expect(@response.status).to eq(204)
+      expect(User.last['name']).to eq 'Grazyna'
+      expect(User.last['email']).to eq 'newmail@example.com'
     end
   end
 end
