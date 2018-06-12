@@ -27,15 +27,29 @@ describe Api::V1::UsersController do
       expect(JSON.parse(response.body)['name']).to eq 'Janusz'
       expect(JSON.parse(response.body)['email']).to eq 'fake.mail@example.com'
     end
+
+    it 'returns an error if user not found' do
+      get '/api/v1/users/4'
+
+      expect(response.status).to eq(404)
+      expect(JSON.parse(response.body)['error']).to eq "'Couldn't find User with 'id'=4'"
+    end
   end
 
   describe 'POST /api/users' do
     it 'creates a new user' do
       post '/api/v1/users', params: {name: 'Grazyna', email: 'newmail@example.com'}
 
-      expect(@response.status).to eq(204)
+      expect(response.status).to eq(204)
       expect(User.last['name']).to eq 'Grazyna'
       expect(User.last['email']).to eq 'newmail@example.com'
+    end
+
+    it 'returns an error if params are invalid' do
+      post '/api/v1/users', params: {name: 'Grazyna'}
+
+      expect(response.status).to eq(400)
+      expect(JSON.parse(response.body)['error']).to include('null value in column')
     end
   end
 end
