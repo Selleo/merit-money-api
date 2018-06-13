@@ -12,7 +12,6 @@ class ApplicationController < ActionController::API
   end
 
   def render_invalid_statement_response(exception)
-    binding.pry
     render json: { error: exception.message }, status: 400
   end
 end
