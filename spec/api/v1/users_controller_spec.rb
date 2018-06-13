@@ -3,17 +3,24 @@ require 'rails_helper'
 describe Api::V1::UsersController do
   describe 'GET /api/users' do
     it 'returns all users' do
-      10.times do
-        create(:user)
+      3.times do |i|
+        create(:user, name: "name_#{i}", email: "email_#{i}@example.com")
       end
-      create(:user, name: 'Janusz', email: 'fake.mail@example.com')
 
       get '/api/v1/users'
 
       expect(response.status).to eq(200)
-      expect(JSON.parse(response.body).count).to eq 11
-      expect(JSON.parse(response.body).last['name']).to eq 'Janusz'
-      expect(JSON.parse(response.body).last['email']).to eq 'fake.mail@example.com'
+      expect(JSON.parse(response.body).count).to eq 3
+      expect(JSON.parse(response.body).first).to include('name' => 'name_0', 'email' => 'email_0@example.com')
+      expect(JSON.parse(response.body).second).to include('name' => 'name_1', 'email' => 'email_1@example.com')
+      expect(JSON.parse(response.body).third).to include('name' => 'name_2', 'email' => 'email_2@example.com')
+    end
+
+    it 'returns empty array if users do not exist' do
+      get '/api/v1/users'
+
+      expect(response.status).to eq(200)
+      expect(JSON.parse(response.body)).to eq []
     end
   end
 
@@ -24,32 +31,29 @@ describe Api::V1::UsersController do
       get '/api/v1/users/4'
 
       expect(response.status).to eq(200)
-      expect(JSON.parse(response.body)['name']).to eq 'Janusz'
-      expect(JSON.parse(response.body)['email']).to eq 'fake.mail@example.com'
+      expect(JSON.parse(response.body)).to include('name' => 'Janusz', 'email' => 'fake.mail@example.com')
     end
 
     it 'returns an error if user not found' do
       get '/api/v1/users/4'
 
       expect(response.status).to eq(404)
-      expect(JSON.parse(response.body)['error']).to eq "'Couldn't find User with 'id'=4'"
+      expect(JSON.parse(response.body)).to include('error' => "Couldn't find User with 'id'=4")
     end
   end
 
   describe 'POST /api/users' do
     it 'creates a new user' do
-      post '/api/v1/users', params: {name: 'Grazyna', email: 'newmail@example.com'}
-
+      expect { post '/api/v1/users', params: {name: 'Grazyna', email: 'newmail@example.com'} }.to change { User.count }.by(1)
       expect(response.status).to eq(204)
-      expect(User.last['name']).to eq 'Grazyna'
-      expect(User.last['email']).to eq 'newmail@example.com'
+      expect(User.last).to have_attributes('name' => 'Grazyna', 'email' => 'newmail@example.com')
     end
 
     it 'returns an error if params are invalid' do
       post '/api/v1/users', params: {name: 'Grazyna'}
 
       expect(response.status).to eq(400)
-      expect(JSON.parse(response.body)['error']).to include('null value in column')
+      expect(JSON.parse(response.body)).to include('error' => 'null value in column')
     end
   end
 end
