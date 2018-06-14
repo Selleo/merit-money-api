@@ -12,6 +12,6 @@ class ApplicationController < ActionController::API
   end
 
   def render_invalid_statement_response(exception)
-    render json: { error: exception.message }, status: 400
+    render json: { error: exception.message }, status: :bad_request
   end
 end

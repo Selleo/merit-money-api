@@ -26,9 +26,9 @@ describe Api::V1::UsersController do
 
   describe 'GET /api/users/:id' do
     it 'returns a specific user' do
-      create(:user, name: 'Janusz', email: 'fake.mail@example.com', id: 4)
+      user = create(:user, name: 'Janusz', email: 'fake.mail@example.com')
 
-      get '/api/v1/users/4'
+      get "/api/v1/users/#{user.id}"
 
       expect(response.status).to eq(200)
       expect(JSON.parse(response.body)).to include('name' => 'Janusz', 'email' => 'fake.mail@example.com')
@@ -45,15 +45,14 @@ describe Api::V1::UsersController do
   describe 'POST /api/users' do
     it 'creates a new user' do
       expect { post '/api/v1/users', params: {name: 'Grazyna', email: 'newmail@example.com'} }.to change { User.count }.by(1)
-      expect(response.status).to eq(204)
+      expect(response.status).to eq(201)
       expect(User.last).to have_attributes('name' => 'Grazyna', 'email' => 'newmail@example.com')
     end
 
     it 'returns an error if params are invalid' do
-      post '/api/v1/users', params: {name: 'Grazyna'}
-
-      expect(response.status).to eq(400)
-      expect(JSON.parse(response.body)).to include('error' => 'null value in column')
+      expect { post '/api/v1/users', params: {name: 'Grazyna'} }.not_to change { User.count }
+      expect(response.status).to eq(422)
+      expect(JSON.parse(response.body)).to include('error' => {"email" => ["can't be blank"]})
     end
   end
 end
