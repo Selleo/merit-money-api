@@ -25,11 +25,11 @@ module Api
       end
 
       def valid_user_creation
-        render json: {message: 'User has been created'}, status: :created
+        render json: { message: 'User has been created' }, status: :created
       end
 
       def invalid_user_creation
-        render json: {error: @user.errors.messages}, status: :unprocessable_entity
+        render json: { error: @user.errors.messages }, status: :unprocessable_entity
       end
     end
   end

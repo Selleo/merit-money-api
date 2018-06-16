@@ -44,15 +44,17 @@ describe Api::V1::UsersController do
 
   describe 'POST /api/users' do
     it 'creates a new user' do
-      expect { post '/api/v1/users', params: {name: 'Grazyna', email: 'newmail@example.com'} }.to change { User.count }.by(1)
+      expect do
+        post '/api/v1/users', params: { name: 'Grazyna', email: 'newmail@example.com' }
+      end.to change { User.count }.by(1)
       expect(response.status).to eq(201)
       expect(User.last).to have_attributes('name' => 'Grazyna', 'email' => 'newmail@example.com')
     end
 
     it 'returns an error if params are invalid' do
-      expect { post '/api/v1/users', params: {name: 'Grazyna'} }.not_to change { User.count }
+      expect { post '/api/v1/users', params: { name: 'Grazyna' } }.not_to change { User.count }
       expect(response.status).to eq(422)
-      expect(JSON.parse(response.body)).to include('error' => {"email" => ["can't be blank"]})
+      expect(JSON.parse(response.body)).to include('error' => { "email" => ["can't be blank"] })
     end
   end
 end
