@@ -1,7 +1,7 @@
 module Support
   module RequestHelpers
     def json_response
-      @json_response ||= JSON.parse(response.body)
+      @json_response = JSON.parse(response.body)
     end
   end
 end
